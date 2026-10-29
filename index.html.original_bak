@@ -1,0 +1,3391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>守望先锋 · 钢琴工坊代码生成器 · Overwatch 2 Workshop MIDI Engine V4.0</title>
+  
+  <!-- Pure Offline Typography: High Performance System Font Stack -->
+  <style>
+    :root {
+      /* ════════════ 战术暗黑与暖橙 4-Tier 深度规范 (Claude Masterclass V4.0) ════════════ */
+      --ink-0: #060A12;
+      --ink-1: #0D1524;
+      --steel: #1B2A40;
+      --steel-hi: #2A3D5A;
+      --line: rgba(150, 190, 240, 0.16);
+      --ow-orange: #F99E1A;
+      --ow-orange-hi: #FFC25A;
+      --ow-cyan: #4FD1FF;
+      --ow-red: #FF4D5E;
+      --ow-amber: #FFB347;
+      --text-1: #EAF1FB;
+      --text-2: #9FB2CC;
+      --text-muted: #8EA0B8;
+
+      /* Bridges for backward compatibility and high-contrast styling */
+      --bg-main: var(--ink-0);
+      --bg-panel: var(--ink-1);
+      --bg-surface: var(--steel);
+      --bg-surface-hover: var(--steel-hi);
+      --bg-input: #080D17;
+      
+      --border-panel: var(--line);
+      --border-subtle: rgba(150, 190, 240, 0.10);
+      --border-input: rgba(150, 190, 240, 0.20);
+      --border-input-focus: var(--ow-cyan);
+      
+      --ow-orange-hover: var(--ow-orange-hi);
+      --ow-orange-active: #E08208;
+      --ow-orange-subtle: rgba(249, 158, 26, 0.12);
+      
+      --tech-cyan: var(--ow-cyan);
+      --tech-cyan-hover: #7BDDFF;
+      --tech-cyan-subtle: rgba(79, 209, 255, 0.12);
+      
+      --accent-emerald: #10B981;
+      --accent-emerald-subtle: rgba(16, 185, 129, 0.14);
+      
+      --warn-amber: var(--ow-amber);
+      --warn-amber-subtle: rgba(255, 179, 71, 0.12);
+      --danger-red: var(--ow-red);
+      
+      --text-primary: var(--text-1);
+      --text-secondary: var(--text-2);
+      
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 10px;
+      
+      --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-tactical: 'Rajdhani', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scrollbar-gutter: stable;
+    }
+
+    html, body {
+      background-color: var(--ink-0);
+      background-image: 
+        radial-gradient(circle at 50% 30%, rgba(13, 21, 36, 0.65) 0%, #060A12 88%),
+        linear-gradient(rgba(150, 190, 240, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(150, 190, 240, 0.022) 1px, transparent 1px),
+        url('assets/bg_paris.jpg');
+      background-size: cover, 40px 40px, 40px 40px, cover;
+      background-position: center top, 0 0, 0 0, center top;
+      background-attachment: fixed;
+      background-repeat: no-repeat, repeat, repeat, no-repeat;
+      color: var(--text-1);
+      font-family: var(--font-system);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ════════════ 页面主体布局：紧凑战术排版 (Max 1420px) ════════════ */
+    .app-container {
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: 4px 14px 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    /* ════════════ 顶部极简品牌条 (~40px 战术条) ════════════ */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+      padding: 0 14px;
+      background: var(--ink-1);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      gap: 10px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .brand-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--text-1);
+      white-space: nowrap;
+    }
+
+    .brand-badge {
+      font-family: var(--font-tactical);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      background: var(--ow-orange-subtle);
+      border: 1px solid rgba(249, 158, 26, 0.4);
+      color: var(--ow-orange);
+      letter-spacing: 0.5px;
+    }
+
+    .header-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-2);
+      background: var(--steel);
+      border: 1px solid var(--line);
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 14px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .status-dot-active {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 6px var(--accent-emerald);
+    }
+
+    /* ════════════ 左右双栏栅格 (1.05fr : 0.95fr) ════════════ */
+    .app-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: 10px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .app-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .col-left, .col-right {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    /* ════════════ 双层战术倒角卡片 (Dual-Layer Chamfered Tactical Cards) ════════════ */
+    .panel-card {
+      position: relative;
+      background: var(--line);
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+      padding: 5px 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-sizing: border-box;
+    }
+
+    .panel-card::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      background: linear-gradient(180deg, rgba(21, 30, 48, 0.94) 0%, rgba(13, 21, 36, 0.97) 100%);
+      clip-path: polygon(0 0, calc(100% - 13.5px) 0, 100% 13.5px, 100% 100%, 13.5px 100%, 0 calc(100% - 13.5px));
+      backdrop-filter: blur(14px) saturate(1.2);
+      -webkit-backdrop-filter: blur(14px) saturate(1.2);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .panel-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .panel-head-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 22px;
+      background: #1F2837;
+      border: 1px solid #37465B;
+      border-left: 3px solid var(--ow-cyan);
+      color: var(--ow-cyan);
+      font-family: var(--font-tactical);
+      font-weight: 800;
+      font-size: 13px;
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+    }
+
+    .step-badge.orange-accent {
+      border-left-color: var(--ow-orange);
+      color: var(--ow-orange);
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-1);
+      letter-spacing: 0.3px;
+    }
+
+    .panel-head-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .counter-pill {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-2);
+      background: var(--steel);
+      border: 1px solid var(--line);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .btn-clear {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      height: 26px;
+      padding: 0 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-clear:hover {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #F87171;
+    }
+
+    /* ════════════ 1. 乐谱管理 (Tabs Component & Dynamic Viewport & 430px Lock) ════════════ */
+    #card1_musicManage,
+    .col-left > .panel-card:first-child {
+      height: 430px;
+      min-height: 430px;
+      max-height: 430px;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 6px 10px;
+      gap: 5px;
+    }
+
+    /* Card 1 Tabs Navigation */
+    .card1-tabs-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(10, 16, 28, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 2px;
+      height: 32px;
+      min-height: 32px;
+      max-height: 32px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .card1-tab-btn {
+      flex: 1;
+      height: 26px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: transparent;
+      border: none;
+      border-radius: 3px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+      user-select: none;
+    }
+
+    .card1-tab-btn:hover {
+      color: var(--text-1);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .card1-tab-btn.active {
+      background: var(--steel);
+      color: var(--ow-cyan);
+      border: 1px solid rgba(79, 209, 255, 0.35);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .card1-tab-badge {
+      font-family: var(--font-tactical);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--ow-orange);
+    }
+
+    /* 内部弹性滚动视口容器 (吸收外部固定差值，完美锁定总高 430px) */
+    .card1-viewport {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
+      box-sizing: border-box;
+      background: rgba(10, 16, 28, 0.7);
+      border: 1px solid rgba(150, 190, 240, 0.12);
+      border-radius: var(--radius-sm);
+      padding: 6px 8px;
+    }
+
+    .card1-viewport::-webkit-scrollbar {
+      width: 5px;
+    }
+    .card1-viewport::-webkit-scrollbar-thumb {
+      background: #2D3A4B;
+      border-radius: 2px;
+    }
+
+    .card1-tab-pane {
+      display: none;
+      height: 100%;
+    }
+
+    .card1-tab-pane.active {
+      display: block;
+    }
+
+    .playlist-empty-notice {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      padding: 16px 10px;
+      gap: 6px;
+      box-sizing: border-box;
+    }
+
+    .empty-notice-icon {
+      color: var(--ow-cyan);
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .empty-notice-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-1);
+    }
+
+    .empty-notice-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 260px;
+      line-height: 1.5;
+    }
+
+    .btn-goto-presets {
+      margin-top: 6px;
+      background: rgba(79, 209, 255, 0.12);
+      border: 1px solid rgba(79, 209, 255, 0.35);
+      border-radius: var(--radius-sm);
+      color: var(--ow-cyan);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn-goto-presets:hover {
+      background: rgba(79, 209, 255, 0.22);
+      border-color: var(--ow-cyan);
+    }
+
+    /* 经典精选曲库 (6首常驻精选卡片 · 纯前端离线载入) */
+    .preset-library-section {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+
+    .preset-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .preset-head-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .preset-icon {
+      color: var(--ow-orange);
+    }
+
+    .preset-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-1);
+      letter-spacing: 0.3px;
+    }
+
+    .preset-badge {
+      font-size: 12px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      background: var(--ow-orange-subtle);
+      border: 1px solid rgba(249, 158, 26, 0.35);
+      color: var(--ow-orange);
+      font-weight: 700;
+    }
+
+    .preset-tip {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .preset-chips-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
+
+    .preset-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 1px;
+      padding: 4px 8px;
+      background: #182232;
+      border: 1px solid #2B3A4F;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-align: left;
+      transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      min-height: 36px;
+    }
+
+    .preset-chip:hover {
+      background: #223044;
+      border-color: var(--ow-cyan);
+      box-shadow: 0 2px 8px rgba(79, 209, 255, 0.18);
+    }
+
+    .preset-chip-main {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      width: 100%;
+    }
+
+    .preset-chip-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ow-cyan);
+      flex-shrink: 0;
+    }
+
+    .preset-chip-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-1);
+      letter-spacing: 0.2px;
+      line-height: 1.4;
+    }
+
+    .preset-chip-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* 已在排队列表中的状态 */
+    .preset-chip.in-playlist {
+      background: rgba(79, 209, 255, 0.12);
+      border-color: var(--ow-cyan);
+    }
+
+    .preset-chip.in-playlist .preset-chip-name {
+      color: var(--ow-cyan);
+    }
+
+    .preset-extension-bar {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding-top: 2px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .ext-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--ow-cyan);
+      opacity: 0.7;
+    }
+
+    /* ════════════ 本地上传拖拽区 (默认 ~74px 宽裕排版 / 紧凑 42px) ════════════ */
+    .dropzone-box {
+      border: 1.5px dashed rgba(150, 190, 240, 0.28);
+      border-radius: var(--radius-sm);
+      padding: 12px 20px;
+      cursor: pointer;
+      background: rgba(13, 21, 36, 0.85);
+      transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 5px;
+      height: 74px;
+      min-height: 74px;
+      max-height: 74px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .dropzone-box:hover, .dropzone-box.dragover {
+      border-color: var(--ow-cyan);
+      background: rgba(79, 209, 255, 0.08);
+      box-shadow: 0 0 14px rgba(79, 209, 255, 0.18);
+    }
+
+    /* 载入文件后紧凑收起状态 (恒定 42px) */
+    .dropzone-box.compact {
+      min-height: 42px;
+      max-height: 42px;
+      height: 42px;
+      padding: 0 14px;
+      border-style: dashed;
+      border-color: rgba(150, 190, 240, 0.22);
+      background: rgba(13, 21, 36, 0.95);
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dropzone-box.compact:hover, .dropzone-box.compact.dragover {
+      border-color: var(--ow-cyan);
+      background: rgba(79, 209, 255, 0.12);
+    }
+
+    .dropzone-default-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .dropzone-box.compact .dropzone-default-view {
+      display: none;
+    }
+
+    .dropzone-compact-view {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--ow-cyan);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .dropzone-box.compact .dropzone-compact-view {
+      display: inline-flex;
+    }
+
+    .dropzone-main-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .dropzone-icon {
+      color: var(--ow-cyan);
+      flex-shrink: 0;
+    }
+
+    .drop-text-primary {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-1);
+      line-height: 1.3;
+    }
+
+    .drop-sub-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .btn-select-file {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 26px;
+      padding: 0 10px;
+      background: var(--steel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--ow-cyan);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      pointer-events: none;
+    }
+
+    .dropzone-box:hover .btn-select-file {
+      background: var(--ow-cyan);
+      color: #060A12;
+      border-color: var(--ow-cyan);
+    }
+
+    /* 单行在线乐谱推荐条 (~32px) */
+    .online-midi-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(13, 21, 36, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0 10px;
+      height: 32px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .online-bar-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ow-cyan);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .online-sites-chips {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+      overflow: hidden;
+    }
+
+    .site-chip {
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-2);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: color 0.15s ease;
+    }
+
+    .site-chip.highlight {
+      color: var(--ow-orange);
+      font-weight: 700;
+    }
+
+    .site-chip:hover {
+      color: var(--ow-cyan);
+    }
+
+    .site-chip.highlight:hover {
+      color: var(--ow-orange-hover);
+    }
+
+    .chip-sep {
+      color: #374354;
+      font-size: 12px;
+    }
+
+    /* 播放列表区域 (在视口内部滚动展示) */
+    .playlist-section {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      height: 100%;
+    }
+
+    .playlist-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .playlist-table-container {
+      background: rgba(10, 16, 28, 0.7);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .playlist-table-container::-webkit-scrollbar {
+      width: 5px;
+    }
+    .playlist-table-container::-webkit-scrollbar-thumb {
+      background: #2D3A4B;
+      border-radius: 2px;
+    }
+
+    .playlist-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .playlist-table tr {
+      height: 38px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background-color 0.15s ease;
+    }
+
+    .playlist-table tr:last-child {
+      border-bottom: none;
+    }
+
+    .playlist-table tr:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .playlist-table td {
+      padding: 6px 10px;
+      vertical-align: middle;
+    }
+
+    .song-idx {
+      color: var(--ow-cyan);
+      font-family: var(--font-tactical);
+      font-weight: 800;
+      font-size: 13px;
+      width: 28px;
+      text-align: center;
+    }
+
+    .song-name-cell {
+      color: var(--text-1);
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .track-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 2px;
+      margin-left: 6px;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    .badge-sample {
+      background: var(--tech-cyan-subtle);
+      border: 1px solid rgba(79, 209, 255, 0.35);
+      color: var(--ow-cyan);
+    }
+
+    .badge-uploaded {
+      background: var(--accent-emerald-subtle);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: var(--accent-emerald);
+    }
+
+    .song-meta-cell {
+      color: var(--text-muted);
+      font-size: 12.5px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .btn-remove-song {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      min-height: 32px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .btn-remove-song:hover {
+      color: var(--danger-red);
+      background: rgba(239, 68, 68, 0.15);
+    }
+
+    .playlist-empty-tip {
+      text-align: center;
+      padding: 12px;
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ════════════ 2. 演奏设置 (统一选中状态规范) ════════════ */
+    .field-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 2px;
+    }
+
+    .map-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 0.9fr;
+      gap: 4px;
+    }
+
+    .piano-choice, .bot-mode-btn {
+      border: 1.5px solid var(--border-panel);
+      border-radius: var(--radius-sm);
+      padding: 4px 7px;
+      cursor: pointer;
+      background: rgba(13, 21, 36, 0.85);
+      transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      color: var(--text-2);
+      user-select: none;
+    }
+
+    .piano-choice {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .piano-choice:hover:not(.disabled), .bot-mode-btn:hover {
+      border-color: rgba(79, 209, 255, 0.6);
+      background: var(--steel);
+      color: #FFFFFF;
+    }
+
+    .piano-choice.selected, .bot-mode-btn.selected {
+      border: 1.5px solid var(--ow-cyan);
+      background: rgba(79, 209, 255, 0.12);
+      color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(79, 209, 255, 0.18);
+    }
+
+    .piano-choice.selected .choice-name, .bot-mode-btn.selected .bot-mode-title {
+      color: #FFFFFF;
+    }
+
+    .piano-choice.disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      border: 1.5px dashed var(--border-subtle);
+      background: rgba(8, 13, 23, 0.8);
+    }
+
+    .choice-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .choice-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-1);
+      line-height: 1.5;
+      transition: color 0.15s ease;
+    }
+
+    .choice-pill {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .pill-ready {
+      background: var(--accent-emerald-subtle);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .pill-soon {
+      background: var(--warn-amber-subtle);
+      color: var(--warn-amber);
+      border: 1px solid rgba(255, 179, 71, 0.4);
+    }
+
+    .choice-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .bot-mode-grid, .perm-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+
+    .bot-mode-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bot-mode-btn svg {
+      color: var(--ow-cyan);
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+
+    .bot-mode-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0px;
+    }
+
+    .bot-mode-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-1);
+      line-height: 1.5;
+      transition: color 0.15s ease;
+    }
+
+    .bot-mode-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 高级演奏设置浮层 (受控 Popover 浮层，实心不透明背景，0px向下挤压) */
+    #card2_performanceSettings {
+      position: relative;
+    }
+
+    .advanced-settings-details {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: rgba(18, 23, 33, 0.9);
+      position: static;
+    }
+
+    .advanced-settings-summary {
+      padding: 5px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      list-style: none;
+      height: 32px;
+      box-sizing: border-box;
+    }
+
+    .advanced-settings-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .advanced-settings-summary:hover {
+      color: var(--text-1);
+    }
+
+    .summary-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .summary-arrow {
+      color: var(--text-muted);
+      font-size: 12px;
+      transition: transform 0.2s ease;
+    }
+
+    .advanced-settings-details[open] .summary-arrow {
+      transform: rotate(180deg);
+    }
+
+    #advancedSettingsContent,
+    .advanced-settings-content {
+      position: absolute;
+      inset: 44px 10px 42px 10px;
+      bottom: auto;
+      height: calc(100% - 86px);
+      z-index: 100;
+      background: #0B111E !important;
+      border: 1px solid var(--steel-hi);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.95), 0 0 16px rgba(79, 209, 255, 0.12);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    .room-mode-section {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .voice-mode-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .voice-choice {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 6px 8px;
+      background: var(--ink-1);
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: color 0.16s ease, background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+      color: var(--text-2);
+      user-select: none;
+      position: relative;
+    }
+
+    .voice-choice:hover {
+      border-color: rgba(79, 209, 255, 0.65);
+      background: var(--steel);
+      color: #FFFFFF;
+    }
+
+    .voice-choice.selected {
+      border: 1.5px solid var(--ow-cyan);
+      background: rgba(79, 209, 255, 0.14);
+      color: #FFFFFF;
+      box-shadow: 0 0 12px rgba(79, 209, 255, 0.22);
+    }
+
+    .voice-choice .choice-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #E2E8F0;
+      line-height: 1.5;
+    }
+
+    .voice-choice.selected .choice-name {
+      color: #FFFFFF;
+    }
+
+    .voice-choice .choice-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .voice-choice.selected .choice-desc {
+      color: #CAD5E2;
+    }
+
+    .voice-choice .choice-subdesc {
+      font-size: 12px;
+      color: var(--ow-cyan);
+      opacity: 0.9;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .voice-choice.selected .choice-subdesc {
+      opacity: 1;
+      color: #7BDDFF;
+    }
+
+    .pill-team {
+      background: rgba(79, 209, 255, 0.12);
+      color: var(--ow-cyan);
+      border: 1px solid rgba(79, 209, 255, 0.4);
+      font-size: 12px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+
+    .pill-solo {
+      background: rgba(249, 158, 26, 0.12);
+      color: var(--ow-orange);
+      border: 1px solid rgba(249, 158, 26, 0.4);
+      font-size: 12px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-weight: 700;
+    }
+
+    .summary-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .summary-cur-pill {
+      font-size: 12px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(79, 209, 255, 0.12);
+      border: 1px solid rgba(79, 209, 255, 0.35);
+      color: var(--ow-cyan);
+      font-weight: 700;
+    }
+
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-label-with-tip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .label-badge {
+      font-size: 12px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: rgba(79, 209, 255, 0.15);
+      color: var(--ow-cyan);
+      font-weight: 700;
+    }
+
+    .field-hint {
+      grid-column: 1 / -1;
+      margin-top: 2px;
+      padding: 7px 10px;
+      border-radius: var(--radius-sm);
+      background: rgba(249, 158, 26, 0.08);
+      border-left: 2px solid var(--ow-orange);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-2);
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .field-hint strong {
+      color: #fff;
+    }
+
+    .hint-icon {
+      flex-shrink: 0;
+      color: var(--ow-orange);
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ════════════ 3. 工坊代码与成果 (Right Column · 380px Lock) ════════════ */
+    #resultsCard {
+      height: 380px;
+      min-height: 380px;
+      max-height: 380px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 6px 10px;
+      position: relative;
+      overflow: visible;
+    }
+
+    /* View 1: 极简空状态 (常驻高度展台 · 确保指南面板位置完全恒定) */
+    .empty-state-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px 16px;
+      gap: 6px;
+      flex: 1;
+      height: calc(380px - 50px);
+      min-height: calc(380px - 50px);
+      max-height: calc(380px - 50px);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .piano-wireframe-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2px;
+    }
+
+    .piano-wireframe-svg {
+      filter: drop-shadow(0 0 10px rgba(79, 209, 255, 0.25));
+    }
+
+    .empty-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #E2E8F0;
+      letter-spacing: 0.5px;
+    }
+
+    .empty-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 380px;
+      line-height: 1.5;
+    }
+
+    .empty-standby-pill {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ow-cyan);
+      background: rgba(79, 209, 255, 0.08);
+      border: 1px dashed rgba(79, 209, 255, 0.35);
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-top: 2px;
+    }
+
+    /* View 2: 处理生成中 */
+    .processing-state-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 16px 16px;
+      gap: 8px;
+      flex: 1;
+      height: calc(380px - 50px);
+      min-height: calc(380px - 50px);
+      max-height: calc(380px - 50px);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .tactical-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(249, 158, 26, 0.18);
+      border-top-color: var(--ow-orange);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .processing-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-1);
+    }
+
+    .processing-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* View 3: 数据就绪展台 (改善的信息层级结构) */
+    .ready-state-view {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+      min-height: 0;
+      box-sizing: border-box;
+      justify-content: flex-start;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: var(--line) transparent;
+      padding-right: 2px;
+    }
+
+    /* 1. 当前曲目标题横幅 */
+    .song-banner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(13, 21, 36, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0 10px;
+      height: 28px;
+      min-height: 28px;
+      max-height: 28px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: var(--text-1);
+      overflow: hidden;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    #displaySongTitle {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .song-banner svg {
+      color: var(--ow-cyan);
+      flex-shrink: 0;
+    }
+
+    /* 2. 网页端音频合成试听条 (~30px) */
+    .preview-audio-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(13, 21, 36, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0 10px;
+      height: 28px;
+      min-height: 28px;
+      max-height: 28px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .preview-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-2);
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #previewSongName {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .preview-info svg {
+      color: var(--ow-cyan);
+      flex-shrink: 0;
+    }
+
+    .btn-preview-audio {
+      height: 24px;
+      padding: 0 10px;
+      background: var(--steel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ow-cyan);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-preview-audio:hover:not(:disabled) {
+      background: var(--ow-cyan);
+      color: #060A12;
+      border-color: var(--ow-cyan);
+    }
+
+    .btn-preview-audio:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    /* 2.5 专用 36px 恒定高度容量状态条 (20-Segment Skewed Capacity Bar) */
+    .capacity-status-strip {
+      height: 36px;
+      min-height: 36px;
+      max-height: 36px;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .capacity-seg-bar {
+      width: 100%;
+      height: 36px;
+      min-height: 36px;
+      max-height: 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      background: rgba(13, 21, 36, 0.85);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 3px 10px;
+      box-sizing: border-box;
+    }
+
+    .cap-segments {
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
+      gap: 3px;
+      height: 8px;
+    }
+
+    .cap-segments i {
+      background: rgba(255, 255, 255, 0.08);
+      transform: skewX(-20deg);
+      border-radius: 1px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cap-segments i.on {
+      background: var(--ow-cyan);
+      box-shadow: 0 0 6px var(--ow-cyan);
+    }
+
+    .cap-text-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .capacity-bar-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .capacity-budget-tag {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .capacity-alert-banner {
+      width: 100%;
+      height: 36px;
+      min-height: 36px;
+      max-height: 36px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      overflow: hidden;
+      white-space: nowrap;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }    .capacity-alert-banner.warn {
+      background: rgba(255, 179, 71, 0.12);
+      border: 1px solid rgba(255, 179, 71, 0.45);
+      border-left: 3.5px solid var(--warn-amber);
+      color: #FDE68A;
+    }
+
+    .capacity-alert-banner.danger {
+      background: rgba(255, 77, 94, 0.15);
+      border: 1px solid rgba(255, 77, 94, 0.55);
+      border-left: 3.5px solid var(--danger-red);
+      color: #FECACA;
+      animation: alertPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes alertPulse {
+      0%, 100% { border-color: rgba(255, 77, 94, 0.55); }
+      50% { border-color: rgba(255, 77, 94, 0.95); box-shadow: 0 0 12px rgba(255, 77, 94, 0.3); }
+    }
+
+    .capacity-alert-icon {
+      font-size: 14px;
+      line-height: 1;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .capacity-alert-content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow: hidden;
+    }
+
+    .capacity-alert-title {
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .capacity-alert-banner.warn .capacity-alert-title {
+      color: #FFC25A;
+    }
+
+    .capacity-alert-banner.danger .capacity-alert-title {
+      color: #FF4D5E;
+    }
+
+    .capacity-alert-desc {
+      font-size: 12px;
+      color: var(--text-2);
+      overflow: visible;
+      text-overflow: clip;
+      white-space: normal;
+      word-break: break-word;
+    }
+
+    /* 3. 🌟 62px 核心行动按钮 (Hero CTA Button with Sweeping Sheen & Parallelogram) 🌟 */
+    .cta-wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 18px rgba(249, 158, 26, 0.45));
+      transition: filter 0.25s ease;
+    }
+
+    .cta-wrap.disabled {
+      filter: none;
+    }
+
+    .cta-wrap.copied {
+      filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.55));
+    }
+
+    .cta-wrap.over-capacity {
+      filter: drop-shadow(0 0 18px rgba(255, 179, 71, 0.35));
+    }
+
+    .btn-core-action {
+      width: 100%;
+      height: 56px;
+      min-height: 56px;
+      max-height: 56px;
+      box-sizing: border-box;
+      font-family: var(--font-tactical);
+      font-size: 18px;
+      font-weight: 800;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      clip-path: polygon(16px 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      color: #060A12;
+      background: linear-gradient(135deg, var(--ow-orange-hi) 0%, var(--ow-orange) 45%, #D97706 100%);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+      transition: background 0.2s ease, transform 0.15s ease, color 0.2s ease, box-shadow 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .btn-core-action::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+      transform: translateX(-120%);
+      animation: sheen 4s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes sheen {
+      0% { transform: translateX(-120%); }
+      25% { transform: translateX(260%); }
+      100% { transform: translateX(260%); }
+    }
+
+    .btn-core-action.state-disabled {
+      background: var(--steel);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .btn-core-action.state-disabled::after {
+      display: none;
+    }
+
+    .btn-core-action.state-ready-generate,
+    .btn-core-action.state-ready-copy {
+      background: linear-gradient(135deg, #FFD38A 0%, var(--ow-orange) 45%, #D97706 100%);
+      color: #060A12;
+    }
+
+    .btn-core-action.state-ready-copy:hover {
+      background: linear-gradient(135deg, #FFE1A8 0%, var(--ow-orange-hi) 45%, #F99E1A 100%);
+      transform: translateY(-1px);
+    }
+
+    .btn-core-action.state-copied {
+      background: linear-gradient(135deg, #6EE7B7 0%, var(--accent-emerald) 50%, #059669 100%);
+      color: #060A12;
+    }
+
+    .btn-core-action[data-state="over"],
+    .btn-core-action.state-over-capacity {
+      background: rgba(255, 179, 71, 0.08);
+      color: #FFB347;
+      box-shadow: inset 0 0 0 2px #FFB347, 0 0 16px rgba(255, 179, 71, 0.25);
+    }
+
+    .btn-core-action[data-state="over"]:hover,
+    .btn-core-action.state-over-capacity:hover {
+      background: rgba(255, 179, 71, 0.16);
+      box-shadow: inset 0 0 0 2px #FFC25A, 0 0 22px rgba(255, 179, 71, 0.4);
+    }
+
+    .btn-core-action.state-dirty {
+      background: linear-gradient(135deg, #FFD38A 0%, var(--ow-orange) 45%, #D97706 100%);
+      color: #060A12;
+    }
+
+    .cta-subline {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 1px;
+      line-height: 1.3;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+
+    /* 4. 紧随核心按钮之下的指引触发链接 */
+    .guide-trigger-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ow-cyan);
+      cursor: pointer;
+      padding: 1px 10px;
+      border-radius: var(--radius-sm);
+      background: rgba(79, 209, 255, 0.05);
+      border: 1px solid rgba(79, 209, 255, 0.18);
+      transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+      user-select: none;
+      text-align: center;
+      height: 22px;
+      min-height: 22px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .guide-trigger-link:hover {
+      color: #FFFFFF;
+      border-color: var(--ow-cyan);
+      background: rgba(79, 209, 255, 0.15);
+    }
+
+    /* 5. 核心指标展台：3 个大数字 (26px Bold Italic) + 设置摘要行 */
+    .stats-metrics-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .stats-hero-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .stat-hero-card {
+      background: rgba(13, 21, 36, 0.85);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 4px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .stat-hero-val {
+      font-family: var(--font-tactical);
+      font-size: 26px;
+      font-weight: 800;
+      font-style: italic;
+      color: var(--ow-cyan);
+      line-height: 1.1;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 10px rgba(79, 209, 255, 0.35);
+    }
+
+    .stat-hero-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+      white-space: nowrap;
+    }
+
+    .stats-settings-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .setting-pill-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 2px 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .setting-pill-label {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .setting-pill-val {
+      color: var(--text-1);
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 6. 辅助操作按钮行 (~34px) */
+    .aux-buttons-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-secondary {
+      height: 32px;
+      padding: 0 10px;
+      background: var(--steel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--text-2);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--steel-hi);
+      border-color: var(--ow-cyan);
+      color: var(--text-1);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    /* 7. 独立战术代码弹窗 (模态浮层 · 零侵占页面流) */
+    .code-preview-wrapper {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(6, 10, 18, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    .code-modal-card {
+      width: 860px;
+      max-width: 92vw;
+      height: 520px;
+      max-height: 85vh;
+      background: var(--ink-1);
+      border: 1px solid var(--ow-cyan);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.85), 0 0 24px rgba(79, 209, 255, 0.2);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .code-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: #17202E;
+      border-bottom: 1px solid var(--border-panel);
+    }
+
+    .code-modal-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #E2E8F0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .code-modal-close {
+      background: transparent;
+      border: 1px solid var(--border-panel);
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      padding: 3px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .code-modal-close:hover {
+      border-color: var(--danger-red);
+      color: #FFF;
+      background: rgba(239, 68, 68, 0.2);
+    }
+
+    .code-preview-box {
+      width: 100%;
+      flex: 1;
+      background: #080D17;
+      border: none;
+      color: #7DD3FC;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 12px;
+      padding: 12px 14px;
+      resize: none;
+      outline: none;
+      line-height: 1.45;
+      box-sizing: border-box;
+    }
+
+    .status-pill {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .status-pill::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status-pill.waiting {
+      background: var(--steel);
+      color: var(--text-muted);
+      border: 1px solid var(--line);
+    }
+
+    .status-pill.pending {
+      background: var(--ow-orange-subtle);
+      color: var(--ow-orange);
+      border: 1px solid rgba(249, 158, 26, 0.4);
+    }
+
+    .status-pill.generating {
+      background: var(--tech-cyan-subtle);
+      color: var(--ow-cyan);
+      border: 1px solid var(--ow-cyan);
+    }
+
+    .status-pill.ready {
+      background: var(--accent-emerald-subtle);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+    }
+
+    .status-pill.over-capacity {
+      background: rgba(255, 179, 71, 0.15);
+      border: 1px solid var(--ow-amber);
+      color: #FFC25A;
+    }
+
+    /* ════════════ 4. 游戏内导入与按键指引 (3D 触感按键与常驻展开) ════════════ */
+    .guide-collapsible {
+      position: relative;
+      background: var(--line);
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+
+    .guide-collapsible::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      background: linear-gradient(180deg, rgba(21, 30, 48, 0.94) 0%, rgba(13, 21, 36, 0.97) 100%);
+      clip-path: polygon(0 0, calc(100% - 13.5px) 0, 100% 13.5px, 100% 100%, 13.5px 100%, 0 calc(100% - 13.5px));
+      backdrop-filter: blur(14px) saturate(1.2);
+      -webkit-backdrop-filter: blur(14px) saturate(1.2);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .guide-collapsible > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .guide-collapsible.guide-highlighted {
+      background: var(--ow-orange);
+      box-shadow: 0 0 20px rgba(249, 158, 26, 0.5);
+    }
+
+    .guide-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      height: 32px;
+      cursor: pointer;
+      user-select: none;
+      list-style: none;
+      background: transparent;
+      transition: background 0.15s ease;
+    }
+
+    .guide-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .guide-summary:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .guide-summary-content {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-1);
+    }
+
+    .guide-badge-icon {
+      color: var(--ow-orange);
+      flex-shrink: 0;
+    }
+
+    .guide-always-open-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: var(--radius-sm);
+      background: rgba(79, 209, 255, 0.15);
+      border: 1px solid rgba(79, 209, 255, 0.35);
+      color: var(--ow-cyan);
+      letter-spacing: 0.3px;
+    }
+
+    .guide-details-body {
+      padding: 6px 11px 8px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .lang-warning-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      background: rgba(255, 179, 71, 0.08);
+      border: 1px solid rgba(255, 179, 71, 0.35);
+      border-left: 3px solid var(--warn-amber);
+      border-radius: var(--radius-sm);
+      padding: 5px 9px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #FEF3C7;
+    }
+
+    .lang-warning-box svg {
+      color: var(--warn-amber);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .lang-warning-box strong {
+      color: var(--ow-orange);
+      font-weight: 700;
+    }
+
+    .import-steps-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .import-step-item {
+      background: rgba(13, 21, 36, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .import-step-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #1F2837;
+      border: 1px solid #37465B;
+      color: var(--ow-cyan);
+      font-family: var(--font-tactical);
+      font-size: 12px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .import-step-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-1);
+      line-height: 1.3;
+    }
+
+    .import-step-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .shortcuts-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      background: rgba(13, 21, 36, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 5px 8px;
+    }
+
+    .shortcut-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--text-2);
+    }
+
+    /* 3D 拟物机械键帽 */
+    .keycap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      background: var(--steel);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+      color: #FFFFFF;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .keycap-note {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      width: 100%;
+      margin-top: 1px;
+    }
+
+    .hud-layout-hint {
+      background: rgba(13, 21, 36, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 5px 8px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .hud-col {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      color: var(--text-2);
+    }
+
+    .hud-col-title {
+      font-weight: 700;
+      color: var(--ow-cyan);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ════════════ Toast 浮动通知 ════════════ */
+    .toast {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-60px);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+      transition: opacity 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28), transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      opacity: 0;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: #059669;
+      border: 1px solid var(--accent-emerald);
+    }
+
+    .toast.error {
+      background: #DC2626;
+      border: 1px solid var(--danger-red);
+    }
+
+    .toast.warn {
+      background: #D97706;
+      border: 1px solid var(--warn-amber);
+    }
+
+    /* ════════════ 微交互：单曲添加行内渐隐高亮 ════════════ */
+    @keyframes rowHighlightFade {
+      0% { background-color: rgba(79, 209, 255, 0.35); }
+      100% { background-color: transparent; }
+    }
+
+    .row-highlight-new {
+      animation: rowHighlightFade 1.6s ease-out forwards;
+    }
+
+    /* ════════════ 笔记本标准分辨率适配 (1366×768 / 676px 可用视口零滚动) ════════════ */
+    @media (max-height: 800px) {
+      .app-container {
+        padding: 2px 14px 4px;
+        gap: 3px;
+      }
+      .app-header {
+        height: 34px;
+      }
+      #card1_musicManage,
+      .col-left > .panel-card:first-child {
+        height: 315px;
+        min-height: 315px;
+        max-height: 315px;
+      }
+      #card2_performanceSettings {
+        padding: 3px 8px;
+        gap: 2px;
+      }
+      #card2_performanceSettings .piano-choice,
+      #card2_performanceSettings .bot-mode-btn {
+        padding: 2px 6px;
+      }
+      #card2_performanceSettings .field-label {
+        margin-bottom: 1px;
+      }
+      #card2_performanceSettings .choice-name,
+      #card2_performanceSettings .bot-mode-title {
+        line-height: 1.3;
+      }
+      #card2_performanceSettings .choice-desc,
+      #card2_performanceSettings .bot-mode-desc {
+        line-height: 1.3;
+      }
+      #card2_performanceSettings .advanced-settings-summary {
+        height: 28px;
+        padding: 2px 8px;
+      }
+      #resultsCard {
+        height: auto;
+        min-height: 330px;
+        max-height: none;
+        overflow: visible;
+      }
+      .empty-state-view,
+      .ready-state-view {
+        height: auto;
+        min-height: calc(330px - 45px);
+        max-height: none;
+      }
+      .btn-core-action {
+        height: 50px;
+        min-height: 50px;
+        max-height: 50px;
+        font-size: 16px;
+      }
+      .guide-details-body {
+        padding: 4px 8px 6px;
+        gap: 4px;
+      }
+      .lang-warning-box {
+        padding: 3px 7px;
+      }
+      .shortcuts-bar, .hud-layout-hint {
+        padding: 3px 6px;
+      }
+    }
+
+    /* ════════════ 无障碍：视觉隐藏但可聚焦的 radio 输入 ════════════ */
+    .sr-only-radio {
+      position: absolute;
+      opacity: 0;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+    }
+
+    /* 全局 focus-visible 高亮环 */
+    :focus-visible {
+      outline: 2px solid var(--ow-cyan, #4FD1FF);
+      outline-offset: 2px;
+    }
+
+    /* 全局无障碍键盘聚焦环 */
+    :focus-visible {
+      outline: 2px solid var(--ow-cyan, #4FD1FF);
+      outline-offset: 2px;
+    }
+
+    /* 视觉隐藏 radio 聚焦时高亮包含它的卡片 (支持现代 :has 与 :focus-within 兜底) */
+    .piano-choice:has(.sr-only-radio:focus-visible),
+    .bot-mode-btn:has(.sr-only-radio:focus-visible),
+    .voice-choice:has(.sr-only-radio:focus-visible),
+    .piano-choice:focus-within,
+    .bot-mode-btn:focus-within,
+    .voice-choice:focus-within {
+      outline: 2px solid var(--ow-cyan, #4FD1FF);
+      outline-offset: 2px;
+      box-shadow: 0 0 12px rgba(79, 209, 255, 0.45);
+    }
+
+    /* ════════════ 移动端适配 (390px ~ 640px) ════════════ */
+    @media (max-width: 640px) {
+      html, body {
+        overflow-x: hidden;
+        max-width: 100vw;
+      }
+      .app-container {
+        grid-template-columns: 1fr;
+        padding: 6px;
+        gap: 6px;
+        max-width: 100vw;
+        overflow-x: hidden;
+      }
+      .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        height: auto;
+        padding: 6px 8px;
+      }
+      .app-header .header-status-pill {
+        display: none;
+      }
+      .brand-title {
+        font-size: 14px;
+        white-space: normal;
+      }
+      .dropzone-main-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        text-align: center;
+      }
+      .drop-text-primary {
+        font-size: 13px;
+        text-align: center;
+      }
+      .online-midi-bar {
+        flex-wrap: wrap;
+        height: auto;
+        gap: 4px;
+        padding: 4px 6px;
+      }
+      .preset-chips-grid {
+        grid-template-columns: 1fr;
+      }
+      .stats-hero-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+      }
+      .stat-hero-card {
+        padding: 4px 2px;
+      }
+      .stat-hero-val {
+        font-size: 22px;
+      }
+      .stats-settings-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4px;
+      }
+      .setting-pill-item {
+        padding: 2px 3px;
+        font-size: 12px;
+      }
+      .aux-buttons-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+      .capacity-bar-row {
+        flex-direction: column;
+        gap: 4px;
+      }
+      /* 容量状态条与告警横幅自适应释放 (防止在 390px 挤压或与主按钮重叠) */
+      .capacity-status-strip {
+        height: auto;
+        min-height: 36px;
+        max-height: none;
+        overflow: visible;
+        margin-bottom: 6px;
+      }
+      .capacity-alert-banner {
+        height: auto;
+        min-height: 36px;
+        max-height: none;
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 8px 10px;
+        gap: 8px;
+        white-space: normal;
+        overflow: visible;
+      }
+      .capacity-alert-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+        white-space: normal;
+        overflow: visible;
+      }
+      .capacity-alert-title {
+        white-space: normal;
+        line-height: 1.35;
+        font-size: 13px;
+      }
+      .capacity-alert-desc {
+        white-space: normal;
+        word-break: break-word;
+        line-height: 1.4;
+        font-size: 12px;
+        overflow: visible;
+      }
+      * { max-width: 100%; box-sizing: border-box; }
+      .app-main { overflow-x: hidden; }
+    }
+
+    /* ════════════ 系统减弱动效偏好 ════════════ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- 顶部极简品牌条 (~40px) -->
+    <header class="app-header">
+      <div class="brand-group">
+        <img src="assets/ow_logo.svg" alt="Overwatch" class="brand-logo">
+        <div class="brand-title-wrap">
+          <span class="brand-title">守望先锋 · 钢琴工坊代码生成器</span>
+          <span class="brand-badge">OW2 V4.0</span>
+        </div>
+      </div>
+
+      <div class="header-status-pill">
+        <span class="status-dot-active"></span>
+        <span>巴黎 A / B 点位已就绪 · OW2 Workshop</span>
+      </div>
+    </header>
+
+    <!-- 主体左右双栏 -->
+    <main class="app-main">
+      
+      <!-- ════════════ 左栏：乐谱管理与演奏设置 ════════════ -->
+      <div class="col-left">
+        
+        <!-- 卡片 1：乐谱管理 -->
+        <div class="panel-card" id="card1_musicManage">
+          <div class="panel-head">
+            <div class="panel-head-left">
+              <span class="step-badge">01</span>
+              <span class="panel-title">乐谱管理</span>
+            </div>
+            <div class="panel-head-actions">
+              <span class="counter-pill" id="playlistCount">已载入 0 / 6 首</span>
+              <button type="button" class="btn-clear" id="clearPlaylistBtn" title="清空全部排队曲目">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                清空
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 1 Tabs Navigation (双标签整合) -->
+          <div class="card1-tabs-nav" role="tablist">
+            <button type="button" class="card1-tab-btn preset-tab-btn active" id="tabPresetLibrary" data-tab="presets" role="tab" aria-selected="true">
+              <span id="tabLibrary" style="display:none;"></span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+              </svg>
+              <span>经典示例曲库</span>
+            </button>
+            <button type="button" class="card1-tab-btn playlist-tab-btn" id="tabPlaylist" data-tab="playlist" role="tab" aria-selected="false">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+              <span>当前播放列表</span>
+              <span class="card1-tab-badge" id="tabPlaylistBadge">(0)</span>
+            </button>
+          </div>
+
+          <!-- Card 1 内部固定滚动视口 -->
+          <div class="card1-viewport" id="card1Viewport">
+            <!-- 标签页 1：经典示例曲库 -->
+            <div class="card1-tab-pane active" id="tabPanePresets" data-panel="panelLibrary" role="tabpanel">
+              <div class="preset-library-section" id="presetLibrarySection">
+                <div class="preset-section-head">
+                  <div class="preset-head-left">
+                    <svg class="preset-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 18V5l12-2v13"></path>
+                      <circle cx="6" cy="18" r="3"></circle>
+                      <circle cx="18" cy="16" r="3"></circle>
+                    </svg>
+                    <span class="preset-title">经典精选曲库</span>
+                    <span class="preset-badge">免下载秒载入</span>
+                  </div>
+                  <span class="preset-tip">点击加入排队 (上限 6 首)</span>
+                </div>
+
+                <!-- 6 首经典精选乐谱网格 (精选曲目，纯前端免下载秒载入) -->
+                <div class="preset-chips-grid">
+                  <!-- 1. 兰亭序 (第一梯队 · 真实物理大钢琴) -->
+                  <button type="button" class="preset-chip" id="sampleLanting" data-sample="lanting" title="点击载入/取消《兰亭序》 (周杰伦 · 抒情大钢琴版 · 1,284音符)">
+                    <div class="preset-chip-main">
+                      <span class="preset-chip-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                          <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                          <path d="M2 2l7.586 7.586"></path>
+                          <circle cx="11" cy="11" r="2"></circle>
+                        </svg>
+                      </span>
+                      <span class="preset-chip-name">兰亭序</span>
+                    </div>
+                    <span class="preset-chip-meta">周杰伦 · 1,284音符</span>
+                  </button>
+
+                  <!-- 2. 最伟大的作品 (第一梯队 · 纯双轨钢琴独奏) -->
+                  <button type="button" class="preset-chip" id="sampleGreatWork" data-sample="greatwork" title="点击载入/取消《最伟大的作品》 (周杰伦 · 双轨钢琴独奏 · 斗琴炫技版)">
+                    <div class="preset-chip-main">
+                      <span class="preset-chip-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="2" y="3" width="20" height="18" rx="2"></rect>
+                          <line x1="6" y1="3" x2="6" y2="13"></line>
+                          <line x1="10" y1="3" x2="10" y2="13"></line>
+                          <line x1="14" y1="3" x2="14" y2="13"></line>
+                          <line x1="18" y1="3" x2="18" y2="13"></line>
+                          <line x1="2" y1="13" x2="22" y2="13"></line>
+                        </svg>
+                      </span>
+                      <span class="preset-chip-name">最伟大的作品</span>
+                    </div>
+                    <span class="preset-chip-meta">周杰伦 · 2,591音符</span>
+                  </button>
+
+                  <!-- 3. 听妈妈的话 (第一梯队 · 纯大钢琴独奏) -->
+                  <button type="button" class="preset-chip" id="sampleTingmama" data-sample="tingmama" title="点击载入/取消《听妈妈的话》 (周杰伦 · 纯大钢琴独奏 · 温暖治愈版 · 1,339音符)">
+                    <div class="preset-chip-main">
+                      <span class="preset-chip-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="2" y="7" width="20" height="14" rx="2"></rect>
+                          <circle cx="8" cy="14" r="3"></circle>
+                          <line x1="15" y1="11" x2="19" y2="11"></line>
+                          <line x1="15" y1="15" x2="19" y2="15"></line>
+                          <polyline points="5 7 12 3"></polyline>
+                        </svg>
+                      </span>
+                      <span class="preset-chip-name">听妈妈的话</span>
+                    </div>
+                    <span class="preset-chip-meta">周杰伦 · 1,339音符</span>
+                  </button>
+
+                  <!-- 4. Mojito (第二梯队 · 古巴风情流行钢琴) -->
+                  <button type="button" class="preset-chip" id="sampleMojito" data-sample="mojito" title="点击载入/取消《Mojito》 (周杰伦 · 古巴风情流行钢琴 · 1,522音符)">
+                    <div class="preset-chip-main">
+                      <span class="preset-chip-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M18 6l-6 7-6-7h12z"></path>
+                          <line x1="12" y1="13" x2="12" y2="21"></line>
+                          <line x1="8" y1="21" x2="16" y2="21"></line>
+                          <circle cx="19" cy="5" r="2"></circle>
+                        </svg>
+                      </span>
+                      <span class="preset-chip-name">Mojito</span>
+                    </div>
+                    <span class="preset-chip-meta">周杰伦 · 1,522音符</span>
+                  </button>
+
+                  <!-- 5. 生日快乐歌 (经典通用速测) -->
+                  <button type="button" class="preset-chip" id="sampleBirthday" data-sample="birthday" title="点击载入/取消《生日快乐歌》 (50音符极速测试)">
+                    <div class="preset-chip-main">
+                      <span class="preset-chip-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"></path>
+                          <path d="M4 16s2-1 4-1 4 1 4 1 2-1 4-1 4 1 4 1"></path>
+                          <line x1="2" y1="21" x2="22" y2="21"></line>
+                          <line x1="8" y1="7" x2="8" y2="11"></line>
+                          <line x1="12" y1="7" x2="12" y2="11"></line>
+                          <line x1="16" y1="7" x2="16" y2="11"></line>
+                        </svg>
+                      </span>
+                      <span class="preset-chip-name">生日快乐</span>
+                    </div>
+                    <span class="preset-chip-meta">经典速测 · 50音符</span>
+                  </button>
+
+                  <!-- 6. 波西米亚狂想曲 (Queen乐队 · 4,811音符神级曲目) -->
+                  <button type="button" class="preset-chip" id="sampleQueen" data-sample="queen" title="点击载入/取消《波西米亚狂想曲》 (Queen乐队 · 4,811音符殿堂神曲)">
+                    <div class="preset-chip-main">
+                      <span class="preset-chip-icon">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"></path>
+                        </svg>
+                      </span>
+                      <span class="preset-chip-name">狂想曲</span>
+                    </div>
+                    <span class="preset-chip-meta">皇后乐队 · 4,811音符</span>
+                  </button>
+
+                  <!-- 兼容性保留节点 (隐藏) -->
+                  <button type="button" id="sampleFanfangxiang" data-sample="fanfangxiang" style="display: none;"></button>
+                  <div id="panelLibrary" style="display: none;"></div>
+                </div>
+
+                <!-- 海量曲库就绪预告 -->
+                <div class="preset-extension-bar">
+                  <span class="ext-dot"></span>
+                  <span>海量曲目扩展就绪：支持未来接入数百首曲库无缝检索与多选排队</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 标签页 2：当前播放列表 -->
+            <div class="card1-tab-pane" id="tabPanePlaylist" data-panel="panelPlaylist" role="tabpanel">
+              <div id="panelPlaylist" style="display:none;"></div>
+              <!-- 空状态提示 (当播放列表为空时展示) -->
+              <div class="playlist-empty-notice" id="playlistEmptyNotice" style="display: flex;">
+                <div class="empty-notice-icon">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--ow-cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18V5l12-2v13"></path>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <circle cx="18" cy="16" r="3"></circle>
+                  </svg>
+                </div>
+                <div class="empty-notice-title">当前播放列表为空</div>
+                <div class="empty-notice-sub">请在「经典示例曲库」选择曲目，或在下方拖入本地 MIDI 文件</div>
+                <button type="button" class="btn-goto-presets" id="btnGotoPresets">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18V5l12-2v13"></path>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <circle cx="18" cy="16" r="3"></circle>
+                  </svg>
+                  <span>前往经典示例曲库</span>
+                </button>
+              </div>
+
+              <!-- 排队曲目列表容器 (保留原生 ID 保证 100% 测试兼容性) -->
+              <div class="playlist-section" id="playlistContainer" style="display: none;">
+                <div class="playlist-section-header">
+                  <span>当前排队曲目 (最多 6 首 · 点击行切换试听)</span>
+                  <span id="capacityIndicator">工坊容量: 0%</span>
+                </div>
+                <div class="playlist-table-container">
+                  <table class="playlist-table" id="playlistTable">
+                    <tbody id="playlistTbody">
+                      <tr>
+                        <td colspan="4" class="playlist-empty-tip">暂无曲目，请在上方拖入 MIDI 或载入示例</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 本地 MIDI 文件上传与拖拽区 (独立常驻 ~74px 默认 / 42px 紧凑) -->
+          <div class="dropzone-box" id="dropzone">
+            <!-- 默认完整视图 -->
+            <div class="dropzone-default-view">
+              <div class="dropzone-main-row">
+                <svg class="dropzone-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span class="drop-text-primary">点击或拖拽本地 MIDI 乐谱到此处</span>
+                <button type="button" class="btn-select-file">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>选择本地文件</span>
+                </button>
+              </div>
+              <div class="drop-sub-text">支持 .mid / .midi 格式，自动解析音轨并与经典精选曲目自由混排</div>
+            </div>
+
+            <!-- 紧凑状态视图 (已载入曲目时提供轻量追加入口) -->
+            <div class="dropzone-compact-view">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>+ 拖入更多本地 MIDI 文件 或点击选择文件</span>
+            </div>
+
+            <input type="file" id="midiFileInput" accept=".mid,.midi" multiple style="display: none;">
+          </div>
+
+          <!-- 单行在线乐谱推荐条 (~32px) -->
+          <div class="online-midi-bar">
+            <div class="online-bar-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span>在线乐谱推荐:</span>
+            </div>
+            <div class="online-sites-chips">
+              <a class="site-chip highlight" href="https://www.aigei.com/music/midi/?tab=all" target="_blank" rel="noopener noreferrer" title="爱给网 · 国内热门海量MIDI乐谱素材库">爱给网 ↗</a>
+              <span class="chip-sep">·</span>
+              <a class="site-chip highlight" href="https://www.midishow.com/" target="_blank" rel="noopener noreferrer" title="MidiShow · 国内最大流行与ACG音乐网">MidiShow ↗</a>
+              <span class="chip-sep">·</span>
+              <a class="site-chip" href="https://bitmidi.com/" target="_blank" rel="noopener noreferrer" title="BitMIDI · 11万首海外免登直下">BitMIDI ↗</a>
+              <span class="chip-sep">·</span>
+              <a class="site-chip" href="https://freemidi.org/" target="_blank" rel="noopener noreferrer" title="FreeMIDI · 欧美流行与影视原声">FreeMIDI ↗</a>
+              <span class="chip-sep">·</span>
+              <a class="site-chip" href="https://www.vgmusic.com/" target="_blank" rel="noopener noreferrer" title="VGMusic · 经典怀旧游戏音乐">VGMusic ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 2：演奏设置 -->
+        <div class="panel-card" id="card2_performanceSettings">
+          <div class="panel-head">
+            <div class="panel-head-left">
+              <span class="step-badge">02</span>
+              <span class="panel-title">演奏设置</span>
+            </div>
+            <span style="font-size: 13px; color: var(--text-muted);">游戏中可按 [Ctrl+V] 切换</span>
+          </div>
+
+          <!-- 巴黎钢琴地图与点位 -->
+          <div role="radiogroup" aria-label="巴黎钢琴点位选择">
+            <div class="field-label">巴黎钢琴地图与点位</div>
+            <div class="map-grid">
+              <label class="piano-choice" id="cardPointA">
+                <input type="radio" name="piano" value="pointA" class="sr-only-radio">
+                <div class="choice-title-row">
+                  <span class="choice-name">巴黎 · 点位 A</span>
+                  <span class="choice-pill pill-ready">就绪</span>
+                </div>
+                <div class="choice-desc">卢娜歌舞厅 · 近进攻方舞台</div>
+              </label>
+
+              <label class="piano-choice selected" id="cardPointB">
+                <input type="radio" name="piano" value="pointB" checked class="sr-only-radio">
+                <div class="choice-title-row">
+                  <span class="choice-name">巴黎 · 点位 B</span>
+                  <span class="choice-pill pill-ready">推荐默认</span>
+                </div>
+                <div class="choice-desc">贵族庄园 · 近防守方大宅</div>
+              </label>
+
+              <div class="piano-choice disabled">
+                <div class="choice-title-row">
+                  <span class="choice-name">皇家赛道</span>
+                  <span class="choice-pill pill-soon">即将支持</span>
+                </div>
+                <div class="choice-desc">进攻方大厅白色大钢琴</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 机器人显隐模式 (统一选中规范) -->
+          <div role="radiogroup" aria-label="机器人显隐模式">
+            <div class="field-label">机器人模式</div>
+            <div class="bot-mode-grid">
+              <label class="bot-mode-btn selected" id="botInvisibleBtn">
+                <input type="radio" name="botVisibility" value="invisible" checked class="sr-only-radio">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"></path>
+                  <circle cx="9" cy="10" r="1"></circle>
+                  <circle cx="15" cy="10" r="1"></circle>
+                </svg>
+                <div class="bot-mode-info">
+                  <span class="bot-mode-title">幽灵隐形演奏 (推荐)</span>
+                  <span class="bot-mode-desc">无模型遮挡，琴键受力自发声</span>
+                </div>
+              </label>
+
+              <label class="bot-mode-btn" id="botVisibleBtn">
+                <input type="radio" name="botVisibility" value="visible" class="sr-only-radio">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="7" r="4"></circle>
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                </svg>
+                <div class="bot-mode-info">
+                  <span class="bot-mode-title">实体机器人显形</span>
+                  <span class="bot-mode-desc">机器人站在钢琴前持枪射击</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- 钢琴操控权限设置 (双向兼容 pianoControl 与 controlPermission) -->
+          <div role="radiogroup" aria-label="钢琴操控权限">
+            <div class="field-label" style="display: flex; justify-content: space-between; align-items: center;">
+              <span>钢琴操控权限</span>
+              <span style="font-size: 12.5px; font-weight: normal; color: var(--text-muted); text-transform: none;">防路人误触乱切歌</span>
+            </div>
+            <div class="perm-grid">
+              <label class="bot-mode-btn selected" id="controlHostOnlyBtn">
+                <input type="radio" name="pianoControl" value="hostOnly" checked class="sr-only-radio">
+                <input type="radio" name="controlPermission" value="hostOnly" checked class="sr-only-radio">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <div class="bot-mode-info">
+                  <span class="bot-mode-title">仅房主可操控 (推荐默认)</span>
+                  <span class="bot-mode-desc">仅房主快捷键有效，防路人误切</span>
+                </div>
+              </label>
+
+              <label class="bot-mode-btn" id="controlAllPlayersBtn">
+                <input type="radio" name="pianoControl" value="allPlayers" class="sr-only-radio">
+                <input type="radio" name="controlPermission" value="allPlayers" class="sr-only-radio">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <div class="bot-mode-info">
+                  <span class="bot-mode-title">所有人均可操控</span>
+                  <span class="bot-mode-desc">派对共享，全员皆可弹奏调速</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- 可折叠高级演奏设置 (实心 Popover 浮层 · 零向下挤压) -->
+          <details class="advanced-settings-details">
+            <summary class="advanced-settings-summary">
+              <div class="summary-left">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <span>高级演奏设置 (房间人数与声部模式)</span>
+              </div>
+              <div class="summary-right">
+                <span class="summary-cur-pill" id="summaryRoomPill">双人私享 (10声部)</span>
+                <span class="summary-arrow">▾</span>
+              </div>
+            </summary>
+            <div class="advanced-settings-content" id="advancedSettingsContent">
+              <!-- 兼容隐藏字段：默认起始为 0 秒 -->
+              <input type="hidden" id="startTimeInput" value="0">
+
+              <!-- 房间人数与声部模式可视化卡片选择器 -->
+              <div class="room-mode-section">
+                <div class="form-label-with-tip">
+                  <span class="room-mode-title" style="font-size: 13px; font-weight: 700; color: #E2E8F0;">房间人数与声部模式 (所见即所得)</span>
+                  <span class="label-badge">上限 12 槽位</span>
+                </div>
+                
+                <div class="voice-mode-grid" role="radiogroup" aria-label="房间声部模式">
+                  <!-- 选项 1: 10声部 (双人私享) -->
+                  <label class="voice-choice selected" id="cardVoice10">
+                    <input type="radio" name="voiceRadio" value="10" checked class="sr-only-radio">
+                    <div class="choice-title-row">
+                      <span class="choice-name">双人私享</span>
+                      <span class="choice-pill pill-ready">推荐默认</span>
+                    </div>
+                    <div class="choice-desc">10 声部 · 房主 + 带 1 友</div>
+                    <div class="choice-subdesc">狂想曲 100% 绝对无损</div>
+                  </label>
+
+                  <!-- 选项 2: 8声部 (四人小队) -->
+                  <label class="voice-choice" id="cardVoice8">
+                    <input type="radio" name="voiceRadio" value="8" class="sr-only-radio">
+                    <div class="choice-title-row">
+                      <span class="choice-name">四人小队</span>
+                      <span class="choice-pill pill-team">组队开黑</span>
+                    </div>
+                    <div class="choice-desc">8 声部 · 房主 + 带 3 友</div>
+                    <div class="choice-subdesc">99.6% 超高还原度</div>
+                  </label>
+
+                  <!-- 选项 3: 11声部 (单人独享) -->
+                  <label class="voice-choice" id="cardVoice11">
+                    <input type="radio" name="voiceRadio" value="11" class="sr-only-radio">
+                    <div class="choice-title-row">
+                      <span class="choice-name">单人独享</span>
+                      <span class="choice-pill pill-solo">满槽音质</span>
+                    </div>
+                    <div class="choice-desc">11 声部 · 仅限房主独奏</div>
+                    <div class="choice-subdesc">全声部狂暴音质 · 防打扰</div>
+                  </label>
+                </div>
+
+                <!-- 兼容性保留原生 select，双向同步以确保已有 API 和自动化测试完全兼容 -->
+                <select id="voicesSelect" style="display: none;">
+                  <option value="10" selected>双人私享：房主+带1人（10声部 · 狂想曲绝对无损 · 推荐）</option>
+                  <option value="8">四人小队：房主+带3人（8声部 · 99.6%高还原度 · 组队开黑）</option>
+                  <option value="11">单人独享：仅限房主（11声部 · 满槽狂暴音质 · 独享防扰）</option>
+                </select>
+              </div>
+
+              <!-- 槽位法则说明 -->
+              <div class="field-hint">
+                <span class="hint-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"></path>
+                    <line x1="10" y1="21" x2="14" y2="21"></line>
+                  </svg>
+                </span>
+                <span><strong>房间槽位法则：</strong>守望先锋队伍上限为 12 槽位（真人玩家 + 机器人声部 = 12）。<strong>允许真人人数越少，可调用的演奏音部越多，复杂曲目音质与还原度越好。</strong></span>
+              </div>
+            </div>
+          </details>
+        </div>
+
+      </div>
+
+      <!-- ════════════ 右栏：成果展台与核心生成操作 ════════════ -->
+      <div class="col-right">
+        
+        <!-- 卡片 3：工坊代码与成果 (高度锁定 380px) -->
+        <div class="panel-card" id="resultsCard">
+          <div class="panel-head">
+            <div class="panel-head-left">
+              <span class="step-badge orange-accent">03</span>
+              <span class="panel-title">工坊代码与成果</span>
+            </div>
+            <span class="status-pill waiting" id="readyStatusPill">等待文件</span>
+          </div>
+
+          <!-- View 1: 极简空状态 (带有等角 65-key 钢琴光影线框插图) -->
+          <div class="empty-state-view" id="emptyStateView">
+            <div class="piano-wireframe-wrap">
+              <svg class="piano-wireframe-svg" width="160" height="76" viewBox="0 0 200 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="pianoGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#4FD1FF" stop-opacity="0.85"/>
+                    <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.2"/>
+                  </linearGradient>
+                  <linearGradient id="lidGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#4FD1FF" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="#1B2A40" stop-opacity="0.1"/>
+                  </linearGradient>
+                </defs>
+                <!-- Base tactical grid under piano -->
+                <path d="M20 75 L100 95 L180 75 L100 55 Z" stroke="rgba(79, 209, 255, 0.18)" stroke-width="1" stroke-dasharray="3 3"/>
+                <!-- Grand piano body base in isometric perspective -->
+                <path d="M40 68 L100 83 L160 68 L130 42 C115 36 85 36 70 42 Z" fill="rgba(13, 21, 36, 0.75)" stroke="url(#pianoGlow)" stroke-width="1.5"/>
+                <!-- Grand piano open lid propped up -->
+                <path d="M40 68 L70 42 C85 36 115 36 130 42 L115 15 C100 10 75 12 55 24 Z" fill="url(#lidGlow)" stroke="#4FD1FF" stroke-width="1.2" stroke-opacity="0.75"/>
+                <!-- Lid prop stick -->
+                <line x1="120" y1="42" x2="115" y2="15" stroke="#FFC25A" stroke-width="1.5"/>
+                <!-- Keyboard bed (Isometric 65 keys representation) -->
+                <path d="M42 66 L98 80 L102 78 L46 64 Z" fill="#EAF1FB" stroke="#4FD1FF" stroke-width="1"/>
+                <path d="M98 80 L158 65 L154 63 L94 78 Z" fill="#EAF1FB" stroke="#4FD1FF" stroke-width="1"/>
+                <!-- Key divisions & black key groupings -->
+                <line x1="50" y1="67" x2="52" y2="65" stroke="#060A12" stroke-width="1.5"/>
+                <line x1="58" y1="69" x2="60" y2="67" stroke="#060A12" stroke-width="1.5"/>
+                <line x1="68" y1="72" x2="70" y2="70" stroke="#060A12" stroke-width="1.5"/>
+                <line x1="76" y1="74" x2="78" y2="72" stroke="#060A12" stroke-width="1.5"/>
+                <line x1="86" y1="77" x2="88" y2="75" stroke="#060A12" stroke-width="1.5"/>
+                <line x1="108" y1="77" x2="106" y2="75" stroke="#060A12" stroke-width="1.5"/>
+                <line x1="118" y1="74" x2="116" y2="72" stroke="#060A12" stroke-width="1.5"/>
+                <line x1="128" y1="72" x2="126" y2="70" stroke="#060A12" stroke-width="1.5"/>
+                <line x1="138" y1="69" x2="136" y2="67" stroke="#060A12" stroke-width="1.5"/>
+                <line x1="148" y1="67" x2="146" y2="65" stroke="#060A12" stroke-width="1.5"/>
+                <!-- Glowing sonic aura rings -->
+                <ellipse cx="100" cy="80" rx="20" ry="6" stroke="#4FD1FF" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="2 4"/>
+                <circle cx="100" cy="50" r="2" fill="#F99E1A"/>
+                <circle cx="75" cy="40" r="1.5" fill="#4FD1FF"/>
+                <circle cx="125" cy="38" r="1.5" fill="#4FD1FF"/>
+              </svg>
+            </div>
+            <div class="empty-title">工坊代码就绪展台 (待命)</div>
+            <div class="empty-subtitle">请在左侧选择精选曲目（如《兰亭序》《听妈妈的话》）或拖拽本地 MIDI 乐谱</div>
+            <div class="empty-standby-pill">载入乐谱后将在此处一键生成工坊代码并提供试听</div>
+          </div>
+
+          <!-- View 2: 处理生成中 -->
+          <div class="processing-state-view" id="processingStateView" style="display: none;">
+            <div class="tactical-spinner"></div>
+            <div class="processing-title" id="processingText">正在解析与生成工坊代码...</div>
+            <div class="processing-sub">正在计算琴键物理打击坐标、多声部机器人分配并压缩数据规则...</div>
+          </div>
+
+          <!-- View 3: 数据就绪展台 (改善的信息层级结构) -->
+          <div class="ready-state-view" id="readyStateView" style="display: none;">
+            <!-- 1. 当前曲目标题横幅 -->
+            <div class="song-banner">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+              </svg>
+              <span id="displaySongTitle">等待在左侧上传 MIDI 乐谱...</span>
+            </div>
+
+            <!-- 2. 网页端音频合成试听条 (~30px) -->
+            <div class="preview-audio-bar">
+              <div class="preview-info">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                  <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                </svg>
+                <span><strong>网页试听</strong>: <span id="previewSongName">未选择曲目</span></span>
+              </div>
+              <button type="button" class="btn-preview-audio" id="previewAudioBtn" disabled>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>试听选中曲目</span>
+              </button>
+            </div>
+
+            <!-- 2.5 专用 36px 恒定高度容量状态条 (20-Segment Skewed Capacity Bar) -->
+            <div class="capacity-status-strip">
+              <!-- 正常容量指示条 (20 段倾斜条 + 文本 + 兼容隐藏 Fill) -->
+              <div class="capacity-seg-bar" id="capacityNormalBar">
+                <div class="cap-segments" id="capacitySegments">
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+                <div class="cap-text-row">
+                  <span class="capacity-bar-text" id="capacityBarText">工坊容量: 0% · 空间充足</span>
+                  <span class="capacity-budget-tag">上限 9,000 数组元素</span>
+                </div>
+                <div id="capacityBarFill" style="display:none;"></div>
+              </div>
+
+              <!-- 工坊容量接近/超出上限预警横幅 (默认隐藏，>=80% 或超出上限时醒目展示) -->
+              <div class="capacity-alert-banner" id="capacityAlertBanner" style="display: none;">
+                <div class="capacity-alert-icon" id="capacityAlertIcon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                </div>
+                <div class="capacity-alert-content">
+                  <div class="capacity-alert-title" id="capacityAlertTitle">工坊容量接近上限</div>
+                  <div class="capacity-alert-desc" id="capacityAlertDesc">当前排队曲目总音符较多，继续添加高密度长曲可能触发截断。</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. 🌟 62px 核心行动按钮 (Hero CTA Button with Sweeping Sheen & Parallelogram) 🌟 -->
+            <div class="cta-wrap disabled">
+              <button type="button" class="btn-core-action state-disabled" id="coreActionBtn" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                <span id="coreActionText">第一步：请在左侧上传 MIDI 乐谱文件</span>
+              </button>
+              <div class="cta-subline" id="coreActionSubline">等待在左侧选择示例或载入 MIDI 乐谱</div>
+            </div>
+
+            <!-- 4. 紧随核心按钮之下的指引触发链接 -->
+            <div class="guide-trigger-link" id="guideTriggerLink">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+              <span>查看游戏导入教程与按键指引 ▾</span>
+            </div>
+
+            <!-- 5. 核心指标展台：3 个大数字 (26px Bold Italic) + 设置摘要行 -->
+            <div class="stats-metrics-wrapper">
+              <div class="stats-hero-row">
+                <div class="stat-hero-card">
+                  <div class="stat-hero-val" id="dispTotalSongs">0 首</div>
+                  <div class="stat-hero-label">TOTAL TRACKS · 总曲目</div>
+                </div>
+                <div class="stat-hero-card">
+                  <div class="stat-hero-val" id="dispNotes">0 个</div>
+                  <div class="stat-hero-label">NOTES COUNT · 总音符</div>
+                </div>
+                <div class="stat-hero-card">
+                  <div class="stat-hero-val" id="dispDuration">00:00</div>
+                  <div class="stat-hero-label">PLAY TIME · 演奏时长</div>
+                </div>
+              </div>
+              <div class="stats-settings-row">
+                <div class="setting-pill-item">
+                  <span class="setting-pill-label">点位:</span>
+                  <span class="setting-pill-val" id="dispPoint">巴黎·点位B</span>
+                </div>
+                <div class="setting-pill-item">
+                  <span class="setting-pill-label">效果:</span>
+                  <span class="setting-pill-val" id="dispBotMode">幽灵隐形</span>
+                </div>
+                <div class="setting-pill-item">
+                  <span class="setting-pill-label">权限:</span>
+                  <span class="setting-pill-val" id="dispControlPerm">仅房主</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 6. 辅助操作按钮行 (~34px) -->
+            <div class="aux-buttons-row">
+              <button type="button" class="btn-secondary" id="downloadBtn" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                另存为 .txt 代码文件
+              </button>
+              <button type="button" class="btn-secondary" id="toggleCodeBtn" disabled>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                展开查看代码原文
+              </button>
+            </div>
+
+            <!-- 7. 可展开代码预览区 (独立战术模态弹窗) -->
+            <div class="code-preview-wrapper" id="codeWrapper">
+              <div class="code-modal-card">
+                <div class="code-modal-header">
+                  <div class="code-modal-title">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="16 18 22 12 16 6"></polyline>
+                      <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    <span>守望先锋工坊代码完整原文 (已生成)</span>
+                  </div>
+                  <button type="button" class="code-modal-close" id="closeCodeModalBtn">✕ 关闭预览</button>
+                </div>
+                <textarea class="code-preview-box" id="codePreview" readonly placeholder="工坊代码已就绪..."></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 4：游戏内导入与按键指引 (常驻展开面板，默认并永久开启) -->
+        <details class="guide-collapsible" id="inGameGuideSection" open>
+          <summary class="guide-summary">
+            <div class="guide-summary-content">
+              <svg class="guide-badge-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="6" y1="12" x2="10" y2="12"></line>
+                <line x1="8" y1="10" x2="8" y2="14"></line>
+                <line x1="15" y1="13" x2="15.01" y2="13"></line>
+                <line x1="18" y1="11" x2="18.01" y2="11"></line>
+                <rect x="2" y="6" width="20" height="12" rx="6"></rect>
+              </svg>
+              <span>游戏导入指南 · 3 步完成 · 查看快捷键与 HUD</span>
+            </div>
+            <span class="guide-always-open-badge">常驻开启</span>
+          </summary>
+
+          <div class="guide-details-body">
+            <!-- 导入关键须知：英文语言警示 -->
+            <div class="lang-warning-box">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              <div>
+                <strong>特别注意</strong>：导入工坊规则时，游戏【文本语言】必须设置为 <strong>English (英文)</strong>，否则游戏内粘贴规则会提示错误。导入成功后可随时切换回中文。
+              </div>
+            </div>
+
+            <!-- 极简三步导入 -->
+            <div class="import-steps-row">
+              <div class="import-step-item">
+                <div class="import-step-num">1</div>
+                <div>
+                  <div class="import-step-title">自定比赛设置</div>
+                  <div class="import-step-sub">自定比赛 ➔ 创建 ➔ 设置</div>
+                </div>
+              </div>
+              <div class="import-step-item">
+                <div class="import-step-num">2</div>
+                <div>
+                  <div class="import-step-title">从剪贴板粘贴</div>
+                  <div class="import-step-sub">右上角图标一键粘贴规则</div>
+                </div>
+              </div>
+              <div class="import-step-item">
+                <div class="import-step-num">3</div>
+                <div>
+                  <div class="import-step-title">走近按 F 弹奏</div>
+                  <div class="import-step-sub">走近巴黎钢琴按 F 开启</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 游戏内快捷键条 (3D 机械质感键帽) -->
+            <div class="shortcuts-bar">
+              <div class="shortcut-pill"><kbd class="keycap">F</kbd><span>开始 / 停止</span></div>
+              <div class="shortcut-pill"><kbd class="keycap">Ctrl</kbd>+<kbd class="keycap">E</kbd><span>切歌 (蹲下+互动)</span></div>
+              <div class="shortcut-pill"><kbd class="keycap">Ctrl</kbd>+<kbd class="keycap">R</kbd><span>重置进度</span></div>
+              <div class="shortcut-pill"><kbd class="keycap">Ctrl</kbd>+<kbd class="keycap">M1/M2</kbd><span>调速 (50%~200%)</span></div>
+              <div class="shortcut-pill"><kbd class="keycap">Ctrl</kbd>+<kbd class="keycap">V</kbd><span>显隐机器人</span></div>
+              <div class="keycap-note">* 说明：以上均为【游戏内操作按键】，进入自定比赛走近钢琴生效，非浏览器网页按键。</div>
+            </div>
+
+            <!-- HUD 左右双栏提示条 -->
+            <div class="hud-layout-hint">
+              <div class="hud-col">
+                <span class="hud-col-title">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                  </svg>
+                  <span>屏幕左侧 HUD:</span>
+                </span>
+                <span>▶ NOW PLAYING: 当前曲目 · [PLAYLIST] 歌单列表</span>
+              </div>
+              <div class="hud-col">
+                <span class="hud-col-title">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                  </svg>
+                  <span>屏幕右侧 HUD:</span>
+                </span>
+                <span>Speed: 100% · [F] 播放 · [Ctrl+E] 切歌</span>
+              </div>
+            </div>
+          </div>
+        </details>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Toast 悬浮弹窗 -->
+  <div class="toast" id="toast"></div>
+
+  <!-- 本地纯前端脚本 (包含离线 Base64 示例乐谱与工坊引擎) -->
+  <script src="js/midi.min.js"></script>
+  <script src="js/owmidiparser.js"></script>
+  <script src="js/workshopTemplate.js"></script>
+  <script src="js/samplesData.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

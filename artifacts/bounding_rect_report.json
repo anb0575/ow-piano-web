@@ -1,0 +1,681 @@
+{
+  "timestamp": "2026-10-23T10:50:10Z",
+  "summary": {
+    "card1_musicManage": {
+      "min_top": 49,
+      "max_top": 49,
+      "delta_top": 0,
+      "delta_bottom": 0,
+      "delta_left": 0.0,
+      "min_height": 430,
+      "max_height": 430
+    },
+    "card2_performanceSettings": {
+      "min_top": 485,
+      "max_top": 485,
+      "delta_top": 0,
+      "delta_bottom": 0.0,
+      "delta_left": 0.0,
+      "min_height": 310.75,
+      "max_height": 310.75
+    },
+    "card3_workshopResult": {
+      "min_top": 49,
+      "max_top": 49,
+      "delta_top": 0,
+      "delta_bottom": 0,
+      "delta_left": 0.0,
+      "min_height": 380,
+      "max_height": 380
+    },
+    "card4_inGameGuide": {
+      "min_top": 435,
+      "max_top": 435,
+      "delta_top": 0,
+      "delta_bottom": 0.0,
+      "delta_left": 0.0,
+      "min_height": 290.89,
+      "max_height": 290.89
+    },
+    "appContainer": {
+      "min_top": 0,
+      "max_top": 0,
+      "delta_top": 0,
+      "delta_bottom": 0.0,
+      "delta_left": 0.0,
+      "min_height": 801.75,
+      "max_height": 801.75
+    }
+  },
+  "criteria": {
+    "card2_top_displacement_le_8px": {
+      "actual": 0,
+      "passed": true
+    },
+    "card3_top_displacement_le_8px": {
+      "actual": 0,
+      "passed": true
+    },
+    "card4_top_displacement_le_8px": {
+      "actual": 0,
+      "passed": true
+    },
+    "app_container_horizontal_shift_eq_0px": {
+      "actual": 0.0,
+      "passed": true
+    },
+    "overall_passed": true
+  },
+  "stages": [
+    {
+      "id": "S1",
+      "name": "初始空列表 (Empty State)",
+      "elements": {
+        "card1_musicManage": {
+          "selector": "#card1_musicManage",
+          "top": 49,
+          "bottom": 479,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 430
+        },
+        "card2_performanceSettings": {
+          "selector": "#card2_performanceSettings",
+          "top": 485,
+          "bottom": 795.75,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 310.75
+        },
+        "card3_workshopResult": {
+          "selector": "#resultsCard",
+          "top": 49,
+          "bottom": 429,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 380
+        },
+        "card4_inGameGuide": {
+          "selector": "#inGameGuideSection",
+          "top": 435,
+          "bottom": 725.89,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 290.89
+        },
+        "appContainer": {
+          "selector": ".app-container",
+          "top": 0,
+          "bottom": 801.75,
+          "left": 242.5,
+          "right": 1662.5,
+          "width": 1420,
+          "height": 801.75
+        }
+      },
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "pageScroll": {
+        "scrollX": 0,
+        "scrollY": 0,
+        "scrollHeight": 1080,
+        "clientHeight": 1080
+      }
+    },
+    {
+      "id": "S2",
+      "name": "添加第 1 首曲目 (Birthday)",
+      "elements": {
+        "card1_musicManage": {
+          "selector": "#card1_musicManage",
+          "top": 49,
+          "bottom": 479,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 430
+        },
+        "card2_performanceSettings": {
+          "selector": "#card2_performanceSettings",
+          "top": 485,
+          "bottom": 795.75,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 310.75
+        },
+        "card3_workshopResult": {
+          "selector": "#resultsCard",
+          "top": 49,
+          "bottom": 429,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 380
+        },
+        "card4_inGameGuide": {
+          "selector": "#inGameGuideSection",
+          "top": 435,
+          "bottom": 725.89,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 290.89
+        },
+        "appContainer": {
+          "selector": ".app-container",
+          "top": 0,
+          "bottom": 801.75,
+          "left": 242.5,
+          "right": 1662.5,
+          "width": 1420,
+          "height": 801.75
+        }
+      },
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "pageScroll": {
+        "scrollX": 0,
+        "scrollY": 0,
+        "scrollHeight": 1080,
+        "clientHeight": 1080
+      }
+    },
+    {
+      "id": "S3",
+      "name": "增至第 2 首曲目 (+Lan Ting Xu)",
+      "elements": {
+        "card1_musicManage": {
+          "selector": "#card1_musicManage",
+          "top": 49,
+          "bottom": 479,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 430
+        },
+        "card2_performanceSettings": {
+          "selector": "#card2_performanceSettings",
+          "top": 485,
+          "bottom": 795.75,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 310.75
+        },
+        "card3_workshopResult": {
+          "selector": "#resultsCard",
+          "top": 49,
+          "bottom": 429,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 380
+        },
+        "card4_inGameGuide": {
+          "selector": "#inGameGuideSection",
+          "top": 435,
+          "bottom": 725.89,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 290.89
+        },
+        "appContainer": {
+          "selector": ".app-container",
+          "top": 0,
+          "bottom": 801.75,
+          "left": 242.5,
+          "right": 1662.5,
+          "width": 1420,
+          "height": 801.75
+        }
+      },
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "pageScroll": {
+        "scrollX": 0,
+        "scrollY": 0,
+        "scrollHeight": 1080,
+        "clientHeight": 1080
+      }
+    },
+    {
+      "id": "S4",
+      "name": "增至第 3 首曲目 (+Ting Mama)",
+      "elements": {
+        "card1_musicManage": {
+          "selector": "#card1_musicManage",
+          "top": 49,
+          "bottom": 479,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 430
+        },
+        "card2_performanceSettings": {
+          "selector": "#card2_performanceSettings",
+          "top": 485,
+          "bottom": 795.75,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 310.75
+        },
+        "card3_workshopResult": {
+          "selector": "#resultsCard",
+          "top": 49,
+          "bottom": 429,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 380
+        },
+        "card4_inGameGuide": {
+          "selector": "#inGameGuideSection",
+          "top": 435,
+          "bottom": 725.89,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 290.89
+        },
+        "appContainer": {
+          "selector": ".app-container",
+          "top": 0,
+          "bottom": 801.75,
+          "left": 242.5,
+          "right": 1662.5,
+          "width": 1420,
+          "height": 801.75
+        }
+      },
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "pageScroll": {
+        "scrollX": 0,
+        "scrollY": 0,
+        "scrollHeight": 1080,
+        "clientHeight": 1080
+      }
+    },
+    {
+      "id": "S5",
+      "name": "增至第 4 首曲目 (+Greatest Work)",
+      "elements": {
+        "card1_musicManage": {
+          "selector": "#card1_musicManage",
+          "top": 49,
+          "bottom": 479,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 430
+        },
+        "card2_performanceSettings": {
+          "selector": "#card2_performanceSettings",
+          "top": 485,
+          "bottom": 795.75,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 310.75
+        },
+        "card3_workshopResult": {
+          "selector": "#resultsCard",
+          "top": 49,
+          "bottom": 429,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 380
+        },
+        "card4_inGameGuide": {
+          "selector": "#inGameGuideSection",
+          "top": 435,
+          "bottom": 725.89,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 290.89
+        },
+        "appContainer": {
+          "selector": ".app-container",
+          "top": 0,
+          "bottom": 801.75,
+          "left": 242.5,
+          "right": 1662.5,
+          "width": 1420,
+          "height": 801.75
+        }
+      },
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "pageScroll": {
+        "scrollX": 0,
+        "scrollY": 0,
+        "scrollHeight": 1080,
+        "clientHeight": 1080
+      }
+    },
+    {
+      "id": "S6",
+      "name": "增至第 5 首曲目 (+Mojito)",
+      "elements": {
+        "card1_musicManage": {
+          "selector": "#card1_musicManage",
+          "top": 49,
+          "bottom": 479,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 430
+        },
+        "card2_performanceSettings": {
+          "selector": "#card2_performanceSettings",
+          "top": 485,
+          "bottom": 795.75,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 310.75
+        },
+        "card3_workshopResult": {
+          "selector": "#resultsCard",
+          "top": 49,
+          "bottom": 429,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 380
+        },
+        "card4_inGameGuide": {
+          "selector": "#inGameGuideSection",
+          "top": 435,
+          "bottom": 725.89,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 290.89
+        },
+        "appContainer": {
+          "selector": ".app-container",
+          "top": 0,
+          "bottom": 801.75,
+          "left": 242.5,
+          "right": 1662.5,
+          "width": 1420,
+          "height": 801.75
+        }
+      },
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "pageScroll": {
+        "scrollX": 0,
+        "scrollY": 0,
+        "scrollHeight": 1080,
+        "clientHeight": 1080
+      }
+    },
+    {
+      "id": "S7",
+      "name": "增至第 6 首曲目 (+Bohemian Rhapsody)",
+      "elements": {
+        "card1_musicManage": {
+          "selector": "#card1_musicManage",
+          "top": 49,
+          "bottom": 479,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 430
+        },
+        "card2_performanceSettings": {
+          "selector": "#card2_performanceSettings",
+          "top": 485,
+          "bottom": 795.75,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 310.75
+        },
+        "card3_workshopResult": {
+          "selector": "#resultsCard",
+          "top": 49,
+          "bottom": 429,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 380
+        },
+        "card4_inGameGuide": {
+          "selector": "#inGameGuideSection",
+          "top": 435,
+          "bottom": 725.89,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 290.89
+        },
+        "appContainer": {
+          "selector": ".app-container",
+          "top": 0,
+          "bottom": 801.75,
+          "left": 242.5,
+          "right": 1662.5,
+          "width": 1420,
+          "height": 801.75
+        }
+      },
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "pageScroll": {
+        "scrollX": 0,
+        "scrollY": 0,
+        "scrollHeight": 1080,
+        "clientHeight": 1080
+      }
+    },
+    {
+      "id": "S8",
+      "name": "容量超限与截断 (Over Capacity)",
+      "elements": {
+        "card1_musicManage": {
+          "selector": "#card1_musicManage",
+          "top": 49,
+          "bottom": 479,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 430
+        },
+        "card2_performanceSettings": {
+          "selector": "#card2_performanceSettings",
+          "top": 485,
+          "bottom": 795.75,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 310.75
+        },
+        "card3_workshopResult": {
+          "selector": "#resultsCard",
+          "top": 49,
+          "bottom": 429,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 380
+        },
+        "card4_inGameGuide": {
+          "selector": "#inGameGuideSection",
+          "top": 435,
+          "bottom": 725.89,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 290.89
+        },
+        "appContainer": {
+          "selector": ".app-container",
+          "top": 0,
+          "bottom": 801.75,
+          "left": 242.5,
+          "right": 1662.5,
+          "width": 1420,
+          "height": 801.75
+        }
+      },
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "pageScroll": {
+        "scrollX": 0,
+        "scrollY": 0,
+        "scrollHeight": 1080,
+        "clientHeight": 1080
+      }
+    },
+    {
+      "id": "S9",
+      "name": "删除曲目 (Delete Song #2)",
+      "elements": {
+        "card1_musicManage": {
+          "selector": "#card1_musicManage",
+          "top": 49,
+          "bottom": 479,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 430
+        },
+        "card2_performanceSettings": {
+          "selector": "#card2_performanceSettings",
+          "top": 485,
+          "bottom": 795.75,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 310.75
+        },
+        "card3_workshopResult": {
+          "selector": "#resultsCard",
+          "top": 49,
+          "bottom": 429,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 380
+        },
+        "card4_inGameGuide": {
+          "selector": "#inGameGuideSection",
+          "top": 435,
+          "bottom": 725.89,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 290.89
+        },
+        "appContainer": {
+          "selector": ".app-container",
+          "top": 0,
+          "bottom": 801.75,
+          "left": 242.5,
+          "right": 1662.5,
+          "width": 1420,
+          "height": 801.75
+        }
+      },
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "pageScroll": {
+        "scrollX": 0,
+        "scrollY": 0,
+        "scrollHeight": 1080,
+        "clientHeight": 1080
+      }
+    },
+    {
+      "id": "S10",
+      "name": "切换设置与复制代码 (Toggle & Copy)",
+      "elements": {
+        "card1_musicManage": {
+          "selector": "#card1_musicManage",
+          "top": 49,
+          "bottom": 479,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 430
+        },
+        "card2_performanceSettings": {
+          "selector": "#card2_performanceSettings",
+          "top": 485,
+          "bottom": 795.75,
+          "left": 256.5,
+          "right": 982.05,
+          "width": 725.55,
+          "height": 310.75
+        },
+        "card3_workshopResult": {
+          "selector": "#resultsCard",
+          "top": 49,
+          "bottom": 429,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 380
+        },
+        "card4_inGameGuide": {
+          "selector": "#inGameGuideSection",
+          "top": 435,
+          "bottom": 725.89,
+          "left": 992.05,
+          "right": 1648.5,
+          "width": 656.45,
+          "height": 290.89
+        },
+        "appContainer": {
+          "selector": ".app-container",
+          "top": 0,
+          "bottom": 801.75,
+          "left": 242.5,
+          "right": 1662.5,
+          "width": 1420,
+          "height": 801.75
+        }
+      },
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "pageScroll": {
+        "scrollX": 0,
+        "scrollY": 0,
+        "scrollHeight": 1080,
+        "clientHeight": 1080
+      }
+    }
+  ]
+}

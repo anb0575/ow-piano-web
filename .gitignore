@@ -1,0 +1,26 @@
+# Ignore heavy local render and video assets
+videos/
+creative_seed/
+outputs/
+artifacts/videos/
+__pycache__/
+*.pyc
+*.bak
+*.zip
+*.bat
+*.ps1
+
+# Test reports
+acceptance_report_*.json
+measurement_results.json
+INDEPENDENT_TEST_REPORT.md
+AGENT_TESTING_PACKAGE.md
+TEST_READY.md
+V4_SUBMISSION_REPORT_TO_CLAUDE.md
+CLAUDE_PROMPT_AND_CONTEXT.md
+test_*.js
+test_*.py
+generate_v33_media.py
+inspect_*.js
+measure_*.js
+verify_*.js

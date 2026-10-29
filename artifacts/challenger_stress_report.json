@@ -1,0 +1,398 @@
+{
+  "timestamp": "2026-10-23T05:31:26Z",
+  "verdict": "APPROVE",
+  "all_passed": true,
+  "section1_multi_res": {
+    "passed": true,
+    "details": {
+      "1920x1080 (Desktop FHD)": {
+        "viewport": {
+          "name": "1920x1080 (Desktop FHD)",
+          "width": 1920,
+          "height": 1080
+        },
+        "scrollbar": {
+          "scrollHeight": 1080,
+          "clientHeight": 1080,
+          "innerHeight": 1080,
+          "hasVScroll": false,
+          "overflowY": "visible",
+          "scrollbarGutter": "stable"
+        },
+        "elements": {
+          "card1_musicManage": {
+            "selector": "#card1_musicManage",
+            "top": 49,
+            "bottom": 479,
+            "left": 256.5,
+            "right": 982.05,
+            "width": 725.55,
+            "height": 430
+          },
+          "card2_performanceSettings": {
+            "selector": "#card2_performanceSettings",
+            "top": 485,
+            "bottom": 795.75,
+            "left": 256.5,
+            "right": 982.05,
+            "width": 725.55,
+            "height": 310.75
+          },
+          "card3_workshopResult": {
+            "selector": "#resultsCard",
+            "top": 49,
+            "bottom": 429,
+            "left": 992.05,
+            "right": 1648.5,
+            "width": 656.45,
+            "height": 380
+          },
+          "card4_inGameGuide": {
+            "selector": "#inGameGuideSection",
+            "top": 435,
+            "bottom": 725.89,
+            "left": 992.05,
+            "right": 1648.5,
+            "width": 656.45,
+            "height": 290.89
+          },
+          "appContainer": {
+            "selector": ".app-container",
+            "top": 0,
+            "bottom": 801.75,
+            "left": 242.5,
+            "right": 1662.5,
+            "width": 1420,
+            "height": 801.75
+          },
+          "detailsSettings": {
+            "selector": ".advanced-settings-details",
+            "top": 756.75,
+            "bottom": 790.75,
+            "left": 266.5,
+            "right": 972.05,
+            "width": 705.55,
+            "height": 34
+          }
+        },
+        "zero_scroll_passed": true
+      },
+      "1440x900 (Laptop / Desktop)": {
+        "viewport": {
+          "name": "1440x900 (Laptop / Desktop)",
+          "width": 1440,
+          "height": 900
+        },
+        "scrollbar": {
+          "scrollHeight": 900,
+          "clientHeight": 900,
+          "innerHeight": 900,
+          "hasVScroll": false,
+          "overflowY": "visible",
+          "scrollbarGutter": "stable"
+        },
+        "elements": {
+          "card1_musicManage": {
+            "selector": "#card1_musicManage",
+            "top": 49,
+            "bottom": 479,
+            "left": 16.5,
+            "right": 742.05,
+            "width": 725.55,
+            "height": 430
+          },
+          "card2_performanceSettings": {
+            "selector": "#card2_performanceSettings",
+            "top": 485,
+            "bottom": 795.75,
+            "left": 16.5,
+            "right": 742.05,
+            "width": 725.55,
+            "height": 310.75
+          },
+          "card3_workshopResult": {
+            "selector": "#resultsCard",
+            "top": 49,
+            "bottom": 429,
+            "left": 752.05,
+            "right": 1408.5,
+            "width": 656.45,
+            "height": 380
+          },
+          "card4_inGameGuide": {
+            "selector": "#inGameGuideSection",
+            "top": 435,
+            "bottom": 725.89,
+            "left": 752.05,
+            "right": 1408.5,
+            "width": 656.45,
+            "height": 290.89
+          },
+          "appContainer": {
+            "selector": ".app-container",
+            "top": 0,
+            "bottom": 801.75,
+            "left": 2.5,
+            "right": 1422.5,
+            "width": 1420,
+            "height": 801.75
+          },
+          "detailsSettings": {
+            "selector": ".advanced-settings-details",
+            "top": 756.75,
+            "bottom": 790.75,
+            "left": 26.5,
+            "right": 732.05,
+            "width": 705.55,
+            "height": 34
+          }
+        },
+        "zero_scroll_passed": true
+      },
+      "1366x768 (Standard Laptop)": {
+        "viewport": {
+          "name": "1366x768 (Standard Laptop)",
+          "width": 1366,
+          "height": 768
+        },
+        "scrollbar": {
+          "scrollHeight": 768,
+          "clientHeight": 768,
+          "innerHeight": 768,
+          "hasVScroll": false,
+          "overflowY": "visible",
+          "scrollbarGutter": "stable"
+        },
+        "elements": {
+          "card1_musicManage": {
+            "selector": "#card1_musicManage",
+            "top": 39,
+            "bottom": 354,
+            "left": 14,
+            "right": 703.31,
+            "width": 689.31,
+            "height": 315
+          },
+          "card2_performanceSettings": {
+            "selector": "#card2_performanceSettings",
+            "top": 360,
+            "bottom": 625.42,
+            "left": 14,
+            "right": 703.31,
+            "width": 689.31,
+            "height": 265.42
+          },
+          "card3_workshopResult": {
+            "selector": "#resultsCard",
+            "top": 39,
+            "bottom": 369,
+            "left": 713.31,
+            "right": 1336.98,
+            "width": 623.67,
+            "height": 330
+          },
+          "card4_inGameGuide": {
+            "selector": "#inGameGuideSection",
+            "top": 375,
+            "bottom": 646.89,
+            "left": 713.31,
+            "right": 1336.98,
+            "width": 623.67,
+            "height": 271.89
+          },
+          "appContainer": {
+            "selector": ".app-container",
+            "top": 0,
+            "bottom": 650.89,
+            "left": 0,
+            "right": 1351,
+            "width": 1351,
+            "height": 650.89
+          },
+          "detailsSettings": {
+            "selector": ".advanced-settings-details",
+            "top": 592.42,
+            "bottom": 622.42,
+            "left": 22,
+            "right": 695.31,
+            "width": 673.31,
+            "height": 30
+          }
+        },
+        "zero_scroll_passed": true
+      },
+      "1280x720 (HD Ready)": {
+        "viewport": {
+          "name": "1280x720 (HD Ready)",
+          "width": 1280,
+          "height": 720
+        },
+        "scrollbar": {
+          "scrollHeight": 720,
+          "clientHeight": 720,
+          "innerHeight": 720,
+          "hasVScroll": false,
+          "overflowY": "visible",
+          "scrollbarGutter": "stable"
+        },
+        "elements": {
+          "card1_musicManage": {
+            "selector": "#card1_musicManage",
+            "top": 39,
+            "bottom": 354,
+            "left": 14,
+            "right": 658.17,
+            "width": 644.17,
+            "height": 315
+          },
+          "card2_performanceSettings": {
+            "selector": "#card2_performanceSettings",
+            "top": 360,
+            "bottom": 625.42,
+            "left": 14,
+            "right": 658.17,
+            "width": 644.17,
+            "height": 265.42
+          },
+          "card3_workshopResult": {
+            "selector": "#resultsCard",
+            "top": 39,
+            "bottom": 369,
+            "left": 668.17,
+            "right": 1251,
+            "width": 582.83,
+            "height": 330
+          },
+          "card4_inGameGuide": {
+            "selector": "#inGameGuideSection",
+            "top": 375,
+            "bottom": 646.89,
+            "left": 668.17,
+            "right": 1251,
+            "width": 582.83,
+            "height": 271.89
+          },
+          "appContainer": {
+            "selector": ".app-container",
+            "top": 0,
+            "bottom": 650.89,
+            "left": 0,
+            "right": 1265,
+            "width": 1265,
+            "height": 650.89
+          },
+          "detailsSettings": {
+            "selector": ".advanced-settings-details",
+            "top": 592.42,
+            "bottom": 622.42,
+            "left": 22,
+            "right": 650.17,
+            "width": 628.17,
+            "height": 30
+          }
+        },
+        "zero_scroll_passed": true
+      }
+    }
+  },
+  "section2_anti_jitter": {
+    "passed": true,
+    "details": {
+      "1920x1080 (Desktop FHD)": {
+        "left_before": 242.5,
+        "left_with_scrollbar": 242.5,
+        "left_after": 242.5,
+        "shift_with": 0.0,
+        "shift_after": 0.0,
+        "passed": true
+      },
+      "1440x900 (Laptop / Desktop)": {
+        "left_before": 2.5,
+        "left_with_scrollbar": 2.5,
+        "left_after": 2.5,
+        "shift_with": 0.0,
+        "shift_after": 0.0,
+        "passed": true
+      },
+      "1366x768 (Standard Laptop)": {
+        "left_before": 0,
+        "left_with_scrollbar": 0,
+        "left_after": 0,
+        "shift_with": 0,
+        "shift_after": 0,
+        "passed": true
+      },
+      "1280x720 (HD Ready)": {
+        "left_before": 0,
+        "left_with_scrollbar": 0,
+        "left_after": 0,
+        "shift_with": 0,
+        "shift_after": 0,
+        "passed": true
+      }
+    }
+  },
+  "section3_tab_switching": {
+    "passed": true,
+    "details": [
+      {
+        "stage": "Stage A: Empty State (0 songs)",
+        "delta_c1_h": 0,
+        "delta_c2_t": 0,
+        "delta_c3_t": 0,
+        "delta_c4_t": 0,
+        "delta_app_l": 0.0,
+        "passed": true
+      },
+      {
+        "stage": "Stage B: 1 Song Loaded (Birthday)",
+        "delta_c1_h": 0,
+        "delta_c2_t": 0,
+        "delta_c3_t": 0,
+        "delta_c4_t": 0,
+        "delta_app_l": 0.0,
+        "passed": true
+      },
+      {
+        "stage": "Stage C: 4 Songs Loaded (+Lanting, +Tingmama, +GreatestWork)",
+        "delta_c1_h": 0,
+        "delta_c2_t": 0,
+        "delta_c3_t": 0,
+        "delta_c4_t": 0,
+        "delta_app_l": 0.0,
+        "passed": true
+      },
+      {
+        "stage": "Stage D: 6 Songs Loaded (+Mojito, +Queen - Over Capacity)",
+        "delta_c1_h": 0,
+        "delta_c2_t": 0,
+        "delta_c3_t": 0,
+        "delta_c4_t": 0,
+        "delta_app_l": 0.0,
+        "passed": true
+      }
+    ]
+  },
+  "section4_popover": {
+    "passed": true,
+    "details": {
+      "downward_push": 0.0,
+      "delta_c2_height": 0.0,
+      "delta_details_h": 0,
+      "drift_top": 0,
+      "floats_upward": true,
+      "passed": true
+    }
+  },
+  "section5_hysteresis": {
+    "passed": true,
+    "details": {
+      "h_c1_diff": 0,
+      "h_c2_diff": 0,
+      "h_c3_diff": 0,
+      "h_c4_diff": 0,
+      "h_app_diff": 0.0,
+      "passed": true
+    }
+  }
+}
