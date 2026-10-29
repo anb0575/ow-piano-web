@@ -40,25 +40,6 @@
    - 点击右侧操作栏的第二个图标【从剪贴板粘贴规则】；
    - 开始比赛，走到钢琴旁按 **F** 键即可欣赏幽灵演奏！
 
----
-
-## 🌐 上传至 GitHub 开启在线网站指南（当本地测试满意后）
-
-由于本项目为 100% 静态纯前端，无需任何构建步骤（无 npm run build），上传至 GitHub Pages 仅需 1 分钟：
-
-1. 在 GitHub 上新建一个公开仓库（例如命名为 `ow-piano`）。
-2. 将 `ow-piano-web` 目录下的所有文件推送/上传至该仓库根目录：
-   - `index.html`
-   - `js/` (包含 `midi.min.js`, `owmidiparser.js`, `workshopTemplate.js`, `app.js`)
-   - `README.md`
-3. 进入 GitHub 仓库页面 -> 点击顶部 **Settings** -> 左侧侧边栏点击 **Pages**。
-4. 在 **Build and deployment** 下方的 **Branch** 中：
-   - 选择 `main`（或 `master`）分支；
-   - 文件夹选择 `/ (root)`；
-   - 点击 **Save**。
-5. 约 30 秒后刷新该页面，顶部即可看到分配的专属在线官方网址：
-   `https://<你的GitHub用户名>.github.io/ow-piano/`
-   之后全国任何玩家打开此链接，都能直接在线制作自己的钢琴工坊代码！
 
 ---
 
